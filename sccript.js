@@ -7,13 +7,12 @@ let columns = 4;//колонка
 
 gameBoard = [
     ['', '', '', ''],
-    ['', '', '', ''],
-    ['', '', '', ''],
-    ['', '', '', '']
+    ['', '', '16', ''],
+    ['', '', '8', ''],
+    ['', '', '2', '']
 ];
 
 function setGame() {
-
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
             const tile = document.createElement('div');
@@ -27,6 +26,7 @@ function setGame() {
         }   
         
     }
+    
 }
 
 setGame();
@@ -34,21 +34,25 @@ setGame();
 
 function anyСell(){//любая ячейка, число 2/4
 
-    const randomIndex = Math.floor(Math.random() * (gameBoard.length));
-    // console.log('>>>>>>>>>', randomIndex)
-    gameBoard[randomIndex][randomIndex] = Math.random() > 0.5 ? 2 : 4;
-    // console.log(gameBoard);
-    const cell = document.getElementById(randomIndex);
-     cell.innerText = gameBoard[randomIndex];
-
-
+    const randomIndex = Math.floor(Math.random() * rows);
+    const randomIndexTwo = Math.floor(Math.random() * columns);   
+    if(gameBoard[randomIndex][randomIndexTwo] == ''){ 
+        const number = Math.random() > 0.5  ? "2" : "4";
+        gameBoard[randomIndex][randomIndexTwo] = number;
+    const cell = document.getElementById(randomIndex + '-' + randomIndexTwo);
+    cell.innerText = gameBoard[randomIndex][randomIndexTwo];
+    updateTile(cell, number);
+    }else{
+        return;
+    }
 
 }
 
 
+anyСell();
 
-function updateTile(tile, num){
-    // const a = {"2": "x2", };
+ function updateTile(tile, num){
+
     switch (num) {
         case "2":
             tile.setAttribute('style', 'background-color: none;' )
@@ -106,10 +110,23 @@ function updateTile(tile, num){
             tile.innerText = num;
             break;
     }
+ }
+
+ document.addEventListener('keydown', (event) => {
+    if(event.code == 'ArrowLeft'){
+        console.log(event);
+    }
+})
+
+function slideLest(){
+    for(let left = 0; left < rows; left++){
+    let row = gameBoard[left];
+    
+
+
+    }
+
 }
-
-anyСell()
-
 
 // const randomIndex = Math.floor(Math.random() * game);
 // game[randomIndex].tile.value = Math.random() > 0.5 ? 2 : 4;
@@ -126,11 +143,19 @@ anyСell()
 // let newCell = [];
 
 // const matrix = [
-//   [null,null,null,null],
-//   [null,null,null,null],
+//   [0-0,0-1,null,null],
+//   [1-0,null,null,null],
 //   [null,null,null,null],
 //   [null,null,null,null],
 // ];
+
+// cpmst matr = [
+//  [1, 2],
+//  [3, 4],
+//]
+
+
+// const arr =  [1, 2]
 
 // function getListContent() {//ячейки
   
