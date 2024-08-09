@@ -12,8 +12,6 @@ gameBoard = [
     ['', '', '', '']
 ];
 
-gameBoard[2][0]
-
 function setGame() {
 
     for (let r = 0; r < rows; r++) {
@@ -33,22 +31,15 @@ function setGame() {
 
 setGame();
 
-const arr = [
-    [1, 2, 1, null],
-    [2, 2, 1, null],
-    [3, 2, 1, null],
-    [4, 2, 1, null],
-]
-const b = arr[2]
-
 
 function anyСell(){//любая ячейка, число 2/4
 
     const randomIndex = Math.floor(Math.random() * (gameBoard.length));
-    console.log('>>>>>>>>>', randomIndex)
+    // console.log('>>>>>>>>>', randomIndex)
     gameBoard[randomIndex][randomIndex] = Math.random() > 0.5 ? 2 : 4;
-    const cell = document.getElementById(randomIndex)
-    cell.innerText = '13';
+    // console.log(gameBoard);
+    const cell = document.getElementById(randomIndex);
+     cell.innerText = gameBoard[randomIndex];
 
 
 
