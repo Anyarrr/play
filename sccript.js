@@ -5,19 +5,27 @@ let gameBoard;//сама матрица
 let rows = 4;//ряд
 let columns = 4;//колонка
 
+// gameBoard = [
+//     ['', '', '', ''],
+//     ['', '', '', ''],
+//     ['', '', '', ''],
+//     ['', '', '', '']
+// ];
+
 gameBoard = [
-    ['', '', '', ''],
-    ['', '', '16', ''],
-    ['', '', '8', ''],
-    ['', '', '2', '']
+    [null, null, null, null],
+    [null, null, null, null],
+    [null, null, null, null],
+    [null, null, 2, null]
 ];
 
-function setGame() {
+
+function setGame() {//заполняем матрицу ячейками div
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
             const tile = document.createElement('div');
             tile.classList.add("tile");
-            tile.id = r + '-' + c;
+            tile.id = r + "-" + c;
             tile.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center;');
             let num = gameBoard[r][c];
             updateTile(tile, num);
@@ -26,7 +34,10 @@ function setGame() {
         }   
         
     }
-    
+    //anyСell();//выводим число 2/4
+    //anyСell();//выводим число 2/4
+    rerender();
+
 }
 
 setGame();
@@ -35,157 +46,150 @@ setGame();
 function anyСell(){//любая ячейка, число 2/4
 
     const randomIndex = Math.floor(Math.random() * rows);
-    const randomIndexTwo = Math.floor(Math.random() * columns);   
-    if(gameBoard[randomIndex][randomIndexTwo] == ''){ 
-        const number = Math.random() > 0.5  ? "2" : "4";
-        gameBoard[randomIndex][randomIndexTwo] = number;
-    const cell = document.getElementById(randomIndex + '-' + randomIndexTwo);
-    cell.innerText = gameBoard[randomIndex][randomIndexTwo];
-    updateTile(cell, number);
-    }else{
-        return;
-    }
-
+    const randomIndexTwo = Math.floor(Math.random() * columns); 
+    const number = Math.random() > 0.5  ? 2 : 4;
+    gameBoard[randomIndex][randomIndexTwo] = number;
+    //rerender(randomIndex, number);
+    
 }
 
+function rerender(){
+    for(let r = 0; r < rows; r++){
+        for (let c = 0; c < columns; c++) {
+            const cell = document.getElementById(r + '-' + c);
+            if (gameBoard[r][c] === null) {
+                continue;
+            }
+            cell.innerText = gameBoard[r][c];
+            //updateTile(cell, number);
+        }
+    }
+}   
 
-anyСell();
+ document.addEventListener('keydown', (event) => {
+    if(event.code == 'ArrowLeft'){
+        slideLeft();
+    }
+    if (event.code == 'ArrowRight') {
+        //console.log(event);
+        //slideRight();
+       }
+//     if (event.code == 'ArrowRight') {
+//         slideTop();
+//     }
+//     if (event.code == 'ArrowRight') {
+//         slideDown();
+// }
+    // ...
+    console.log('>>>', gameBoard);
 
- function updateTile(tile, num){
+    rerender();
+})
+
+// function stepSlide(row){
+//     row.push(row.shift());
+// }
+
+// gameBoard = [                 r
+//     ['', '', '', ''],    ---- 0
+//     ['', '', '', ''],         1
+//     ['', '', '', ''],         2
+//     ['', '2', '', '']         3
+// ];
+
+function slideLeft(){
+    for (let r = 0; r < rows; r++) {
+        for(let c = 0; c < columns; c++){
+
+        }
+    }
+}
+
+// function slideRight(){
+//     for (let r = 0; r < rows; r++) {
+//     let row = gameBoard[r];
+//     //row.push(row.shift());
+//     row = stepSlide(row);
+//     for(let c = 4; c < columns; c++){
+//         let tile = document.getElementById(r + '-' + c);
+//         let num = gameBoard[r][c];
+//         updateTile(tile, num);
+//     }
+//     }
+// }
+
+// function slideLeft(){
+//     for (let r = 0; r < rows; r++) {
+//     let row = gameBoard[r];
+//     row.push(row.shift());
+//     gameBoard[r] = row;
+//     }
+// }
+
+// function slideLeft(){
+//     for (let r = 0; r < rows; r++) {
+//     let row = gameBoard[r];
+//     row.push(row.shift());
+//     gameBoard[r] = row;
+//     }
+// }
+function updateTile(tile, num){
 
     switch (num) {
-        case "2":
+        case 2:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x2");
             tile.innerText = num;
             break;
-        case "4":
+        case 4:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x4");
             tile.innerText = num;
             break;
-        case "8":
+        case 8:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x8");
             tile.innerText = num;
             break;
-        case "16":
+        case 16:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x16");
             tile.innerText = num;
             break;
-        case "32":
+        case 32:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x32");
             tile.innerText = num;
             break;
-        case "64":
+        case 64:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x64");
             tile.innerText = num;
             break;
-        case "128":
+        case 128:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x128");
             tile.innerText = num;
             break;
-        case "256":
+        case 256:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x256");
             tile.innerText = num;
             break;
-        case "512":
+        case 512:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x512");
             tile.innerText = num;
              break;
-        case "1024":
+        case 1024:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x1024");
             tile.innerText = num;
             break;
-        case "2048":
+        case 2048:
             tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x2048");
             tile.innerText = num;
             break;
     }
  }
-
- document.addEventListener('keydown', (event) => {
-    if(event.code == 'ArrowLeft'){
-        console.log(event);
-    }
-})
-
-function slideLest(){
-    for(let left = 0; left < rows; left++){
-    let row = gameBoard[left];
-    
-
-
-    }
-
-}
-
-// const randomIndex = Math.floor(Math.random() * game);
-// game[randomIndex].tile.value = Math.random() > 0.5 ? 2 : 4;
-
-
-// const value = Math.random() > 0.5 ? 2 : 4; //возвращает случайное число
-// tile.textContent = value;
-// game.append(tile);
-
-
-
-// const sum = 4;
-// const result = sum * sum;
-// let newCell = [];
-
-// const matrix = [
-//   [0-0,0-1,null,null],
-//   [1-0,null,null,null],
-//   [null,null,null,null],
-//   [null,null,null,null],
-// ];
-
-// cpmst matr = [
-//  [1, 2],
-//  [3, 4],
-//]
-
-
-// const arr =  [1, 2]
-
-// function getListContent() {//ячейки
-  
-//     for(let i = 1; i <= result; i++) {
-//       let cell = document.createElement('div');//ячейки
-//       cell.classList.add('cell');
-//       cell.append(i);
-//       newCell.push(cell);
-//       cell.innerHTML = null;
-//       cell.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35); border-radius: 3px;');
-//     }
-  
-//     return newCell;
-//   }
-// game.append(...getListContent());
-
-// const tile = document.createElement('div');//ячейка с цифрой
-// tile.classList.add('tile');
-// const value = Math.random() > 0.5 ? 2 : 4; //возвращает случайное число
-// tile.textContent = value;
-// game.append(tile);
-
-
-// let linkTile = () => {
-//   const linkedTitle = tile;
-// }
-
-// const grid = newCell;//получаем случайную свободную ячейку
-// grid.getRandomCell().linkTile(tile);
-
-
-
-// tile.setAttribute('style', ' --y:0; --x:0; position: absolute; top: calc(var(--y) * var(--cell-size)); left: calc(var(--x) * var(--cell-size)); display: flex; justify-content: center; align-items: center; width: 113px; height: 113px; border-radius: 3px; font-size: 55px; font-weight: bold;  background-color: #eee4da; animation: show 200ms; transition: 100ms; @keyframes show {0% {opacity: 0.5;transform: scale(0);}}');
