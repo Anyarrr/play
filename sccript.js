@@ -14,9 +14,9 @@ let columns = 4;//колонка
 
 gameBoard = [
     [null, null, null, null],
+    [null, 2, null, null],
     [null, null, null, null],
-    [null, null, null, null],
-    [null, null, 2, null]
+    [null, null, null, null]
 ];
 
 
@@ -34,8 +34,8 @@ function setGame() {//заполняем матрицу ячейками div
         }   
         
     }
-    //anyСell();//выводим число 2/4
-    //anyСell();//выводим число 2/4
+    anyСell();//выводим число 2/4
+    anyСell();//выводим число 2/4
     rerender();
 
 }
@@ -71,23 +71,89 @@ function rerender(){
         slideLeft();
     }
     if (event.code == 'ArrowRight') {
-        //console.log(event);
         //slideRight();
        }
-//     if (event.code == 'ArrowRight') {
-//         slideTop();
-//     }
-//     if (event.code == 'ArrowRight') {
-//         slideDown();
-// }
     // ...
     console.log('>>>', gameBoard);
 
     rerender();
 })
 
-// function stepSlide(row){
-//     row.push(row.shift());
+
+// function slide(row){
+//     row = stepSlide(row);
+//     for(let i = 0; i < row.lenght; i++){
+//         if(row[i]== row[i+1]);
+//         row[i] *= 2;
+//         row[i+1] = 0;
+//     }
+
+// }
+
+function slideLeft(){
+    for (let r = 0; r < rows.length; r++) {
+            if(gameBoard[r] !== null && gameBoard[r] === gameBoard[r+1]){ 
+            gameBoard[r] *= 2;
+            gameBoard[r+1] = null;
+    for(let c = 0; c < columns.length; c++){
+            if(gameBoard[c] !== null){
+            let tile = document.getElementById(r + '-' + c);
+            gameBoard[c+1] = null;
+            let num = gameBoard[r][c];
+            updateTile(tile, num);
+        }
+    }
+          }
+        }
+
+    }
+
+
+// function slideLeft(){
+//     for (let r = 0; r < rows; r++) {
+//         for(let c = 0; c < columns; c++){
+//             const newArr = arr.filter(item => item != null);
+//             console.log(newArr);
+//             for(let i = 0; newArr.length < 4; i++) {
+//             newArr.push(null);
+//             console.log(newArr);
+//             }
+//             return newArr;
+//             }
+//         }
+//     }
+
+    // const slideLeft = (gameBoard) => {
+    //     for(let i = 0; i < gameBoard.length; i++){
+    //       if(gameBoard[i] !== null && gameBoard[i] === gameBoard[i+1]){ 
+    //         gameBoard[i] *= 2;
+    //         gameBoard[i+1] = null;
+    //       }
+    //     }
+        
+    //     const result = gameBoard.filter(item => item !== null);
+    //     for(; result.length < gameBoard.length;){
+    //       result.push(null);
+    //     }
+    //     return result;
+    //     }
+
+
+
+
+
+// function slideLeft(){
+//     for (let r = 0; r < rows; r++) {
+//         for(let c = 0; c < columns; c++){
+//             let row = gameBoard[r];
+//             row = slide(row);
+//             let tile = document.getElementById(r + '-' + c);
+//             let num = gameBoard[r][c];
+//             updateTile(tile, num);
+
+
+//         }
+//     }
 // }
 
 // gameBoard = [                 r
@@ -96,14 +162,6 @@ function rerender(){
 //     ['', '', '', ''],         2
 //     ['', '2', '', '']         3
 // ];
-
-function slideLeft(){
-    for (let r = 0; r < rows; r++) {
-        for(let c = 0; c < columns; c++){
-
-        }
-    }
-}
 
 // function slideRight(){
 //     for (let r = 0; r < rows; r++) {
@@ -133,6 +191,7 @@ function slideLeft(){
 //     gameBoard[r] = row;
 //     }
 // }
+
 function updateTile(tile, num){
 
     switch (num) {
