@@ -80,35 +80,6 @@ function rerender(){
 })
 
 
-// function slide(row){
-//     row = stepSlide(row);
-//     for(let i = 0; i < row.lenght; i++){
-//         if(row[i]== row[i+1]);
-//         row[i] *= 2;
-//         row[i+1] = 0;
-//     }
-
-// }
-
-function slideLeft(){
-    for (let r = 0; r < rows.length; r++) {
-            if(gameBoard[r] !== null && gameBoard[r] === gameBoard[r+1]){ 
-            gameBoard[r] *= 2;
-            gameBoard[r+1] = null;
-    for(let c = 0; c < columns.length; c++){
-            if(gameBoard[c] !== null){
-            let tile = document.getElementById(r + '-' + c);
-            gameBoard[c+1] = null;
-            let num = gameBoard[r][c];
-            updateTile(tile, num);
-        }
-    }
-          }
-        }
-
-    }
-
-
 // function slideLeft(){
 //     for (let r = 0; r < rows; r++) {
 //         for(let c = 0; c < columns; c++){
@@ -122,25 +93,6 @@ function slideLeft(){
 //             }
 //         }
 //     }
-
-    // const slideLeft = (gameBoard) => {
-    //     for(let i = 0; i < gameBoard.length; i++){
-    //       if(gameBoard[i] !== null && gameBoard[i] === gameBoard[i+1]){ 
-    //         gameBoard[i] *= 2;
-    //         gameBoard[i+1] = null;
-    //       }
-    //     }
-        
-    //     const result = gameBoard.filter(item => item !== null);
-    //     for(; result.length < gameBoard.length;){
-    //       result.push(null);
-    //     }
-    //     return result;
-    //     }
-
-
-
-
 
 // function slideLeft(){
 //     for (let r = 0; r < rows; r++) {
