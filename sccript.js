@@ -1,3 +1,8 @@
+const score = document.createElement('div');
+score.classList.add('score');
+score.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35);width: 160px; ')
+
+
 const game = document.getElementById('game-board');//conteiner
 game.setAttribute('style',' --cell-size:128px; position: relative;height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(4, 113px); grid-template-rows: repeat(4, 113px); gap: 15px;');
 
@@ -11,73 +16,6 @@ gameBoard = [
     [null, null, null, null],
     [null, null, null, null]
 ];
-
-
-const moveLeft = (arr) => {
-    const result = arr.filter(item => item !== null);
-    for (let i = 0; i < result.length; i++) {
-      if (result[i] === result[i + 1]) {
-        result[i] *= 2;
-        result[i + 1] = null;
-      }
-    }
-  
-    const sum = result.filter(item => item !== null);
-  
-    while (sum.length < 4) {
-      sum.push(null);
-    }
-  
-    return sum;
-  }
-  
-  const mvRight = (arr) => {//направо
-    const copy = [...arr].reverse();//
-    const res = moveLeft(copy);
-    return res.reverse();
-  }
-  
-  const rotate = (arr, callback) => {
-    const allResults = [];
-    for (let c = 0; c < arr.length; c++) {//прошлись по столбцам
-      const newArr = [];
-      for (let r = 0; r < arr.length; r++) {//прошлись по рядам
-        newArr.push(arr[r][c]);//добавили в переменную arr результат прохождения с начала ряда сверху вних по колонке 
-      }
-      const res = callback(newArr);//сложил и revers
-      allResults.push(res);
-    }
-    return allResults;
-  }
-  
-  const createEmptyMatrix = (size) => {
-    return new Array(size).fill(undefined).map(() => {
-      return new Array(size).fill(null)
-    })
-  }
-  
-  const rotateBack = (allResults) => {
-    const newResults = createEmptyMatrix(gameBoard.length)
-  
-    for (let c = 0; c < allResults.length; c++) {//прошлись по столбцам
-      for (let r = 0; r < allResults.length; r++) {
-        newResults[r][c] = allResults[c][r];
-      }
-    }
-  
-    return newResults;
-  }
-  
-  const mvTop = (arr) => {
-    const allResults = rotate(arr, moveLeft);
-    return rotateBack(allResults);
-  }
-  
-  const moveDown = (arr) => {
-    const allResults = rotate(arr, mvRight);
-    return rotateBack(allResults);
-  }
-  
 
 function setGame() {//заполняем матрицу ячейками div
     for (let r = 0; r < rows; r++) {
@@ -111,56 +49,159 @@ function anyСell(){//любая ячейка, число 2/4
     gameBoard[randomIndex][randomIndexTwo] = number;//равно рандомному числу
     //document.getElementById('[randomIndex][randomIndexTwo]');
     rerender(randomIndex, number);
+    
 }
 
 function rerender(randomIndex, number){
     for(let r = 0; r < rows; r++){
         for (let c = 0; c < columns; c++) {
+          
             const cell = document.getElementById(r + '-' + c);//ячейка
-            if (gameBoard[r][c] === null) {
-                continue;
-            }
+            // if (gameBoard[r][c] === null) {
+            //     continue;
+            // }
+
             cell.innerText = gameBoard[r][c];//если ячейка не null то добавь 2/4
-            updateTile(cell, number);
+            updateTile(cell, gameBoard[r][c]);
         }
     }
 }   
 
- document.addEventListener('keydown', (event) => {
-    if(event.code == 'ArrowLeft'){
-        moveLeft(gameBoard);
-    }
-    if (event.code == 'ArrowRight') {
-        mvRight(gameBoard)
-       }
-    // ...
-    console.log('>>>', gameBoard);
+const checkIsDirty = (board) => {
+  for (let i = 0; i < 4; i++) {
+  for (let j = 0; j < 4; j++) {
+  if (gameBoard[i][j] !== board[i][j]) {
+  return true;
+  }
+  }
+  }
+  
+  return false;
+  }
 
+ document.addEventListener('keydown', (event) => {
+  
+    if(event.code === 'ArrowLeft'){
+      const isDirty = checkIsDirty(moveLeft(gameBoard));
+      
+      
+      gameBoard = moveLeft(gameBoard);
+      if (isDirty) {
+      anyСell();
+      }
+        
+        
+    }
+    if (event.code === 'ArrowRight') {
+      const isDirty = checkIsDirty(mvRight(gameBoard));
+
+      gameBoard = mvRight(gameBoard);
+      if (isDirty) {
+      anyСell();
+      }
+       }
+
+       if(event.code === 'ArrowUp'){
+        const isDirty = checkIsDirty(mvTop(gameBoard));
+        
+        
+        gameBoard = mvTop(gameBoard);
+        if (isDirty) {
+        anyСell();
+        }
+          
+          
+      }
+      if (event.code === 'ArrowDown') {
+        const isDirty = checkIsDirty(moveDown(gameBoard));
+  
+        gameBoard = moveDown(gameBoard);
+        if (isDirty) {
+        anyСell();
+        }
+         }
+    
     rerender();
 })
 
-
-function slideLeft(gameBoard){
-    const result = gameBoard.filter(item => item !== null);
-    for (let i = 0; i < result.length; i++) {
-      if (result[i] === result[i + 1]) {
-        result[i] *= 2;
-        result[i + 1] = null;
-      }
-    }
+const moveLeft = (arr) => {
+  const asd = [];
+  for (let c = 0; c < arr.length; c++) {
   
-    const sum = result.filter(item => item !== null);
+  const result = arr[c].filter(item => item !== null);
+  for (let i = 0; i < result.length; i++) {
+  if (result[i]  && result[i] === result[i + 1]) {
+  result[i] *= 2;
+  result[i + 1] = null;
+  }
+  }
+  const sum = result.filter(item => item !== null);
   
-    while (sum.length < 4) {
-      sum.push(null);
-    }
+  while (sum.length < 4) {
+  sum.push(null);
+  }
+  console.log(sum ,123456);
   
-    return sum;
+  asd.push(sum);
+  }
+  return asd;
+  } 
+
+  const mvRight = (arr) => {//направо
+    const copy = arr.map(r => r.reverse())//
+    const res = moveLeft(copy);
+    console.log(res);
+    
+    return res.map(r => r.reverse());
     }
 
-// function slideRight(){
-
+// const mvRight = (arr) => {//направо
+//   const copy = [...arr].reverse();//
+//   const res = moveLeft(copy);
+//   return res.reverse();
 // }
+
+const rotate = (arr, callback) => {
+  const allResults = [];
+  for (let c = 0; c < arr.length; c++) {//прошлись по столбцам
+    const newArr = [];
+    for (let r = 0; r < arr.length; r++) {//прошлись по рядам
+      newArr.push(arr[r][c]);//добавили в переменную arr результат прохождения с начала ряда сверху вних по колонке 
+    }
+
+    allResults.push(newArr);
+  }
+  return callback(allResults);
+}
+
+const createEmptyMatrix = (size) => {
+  return new Array(size).fill(undefined).map(() => {
+    return new Array(size).fill(null)
+  })
+}
+
+const rotateBack = (allResults) => {
+  const newResults = createEmptyMatrix(gameBoard.length)
+
+  for (let c = 0; c < allResults.length; c++) {//прошлись по столбцам
+    for (let r = 0; r < allResults.length; r++) {
+      newResults[r][c] = allResults[c][r];
+    }
+  }
+
+  return newResults;
+}
+
+const mvTop = (arr) => {
+  const allResults = rotate(arr, moveLeft);
+  return rotateBack(allResults);
+}
+
+const moveDown = (arr) => {
+  const allResults = rotate(arr, mvRight);
+  return rotateBack(allResults);
+}
+
 
 function updateTile(tile, num){
 
@@ -220,5 +261,12 @@ function updateTile(tile, num){
             tile.classList.add("x2048");
             tile.innerText = num;
             break;
+            default:
+             tile.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35)' )
+             tile.innerText = '';
+             break;
     }
  }
+
+
+
