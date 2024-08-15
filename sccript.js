@@ -5,73 +5,133 @@ let gameBoard;//сама матрица
 let rows = 4;//ряд
 let columns = 4;//колонка
 
-// gameBoard = [
-//     ['', '', '', ''],
-//     ['', '', '', ''],
-//     ['', '', '', ''],
-//     ['', '', '', '']
-// ];
-
 gameBoard = [
     [null, null, null, null],
-    [null, 2, null, null],
+    [null, null, null, null],
     [null, null, null, null],
     [null, null, null, null]
 ];
 
+
+const moveLeft = (arr) => {
+    const result = arr.filter(item => item !== null);
+    for (let i = 0; i < result.length; i++) {
+      if (result[i] === result[i + 1]) {
+        result[i] *= 2;
+        result[i + 1] = null;
+      }
+    }
+  
+    const sum = result.filter(item => item !== null);
+  
+    while (sum.length < 4) {
+      sum.push(null);
+    }
+  
+    return sum;
+  }
+  
+  const mvRight = (arr) => {//направо
+    const copy = [...arr].reverse();//
+    const res = moveLeft(copy);
+    return res.reverse();
+  }
+  
+  const rotate = (arr, callback) => {
+    const allResults = [];
+    for (let c = 0; c < arr.length; c++) {//прошлись по столбцам
+      const newArr = [];
+      for (let r = 0; r < arr.length; r++) {//прошлись по рядам
+        newArr.push(arr[r][c]);//добавили в переменную arr результат прохождения с начала ряда сверху вних по колонке 
+      }
+      const res = callback(newArr);//сложил и revers
+      allResults.push(res);
+    }
+    return allResults;
+  }
+  
+  const createEmptyMatrix = (size) => {
+    return new Array(size).fill(undefined).map(() => {
+      return new Array(size).fill(null)
+    })
+  }
+  
+  const rotateBack = (allResults) => {
+    const newResults = createEmptyMatrix(gameBoard.length)
+  
+    for (let c = 0; c < allResults.length; c++) {//прошлись по столбцам
+      for (let r = 0; r < allResults.length; r++) {
+        newResults[r][c] = allResults[c][r];
+      }
+    }
+  
+    return newResults;
+  }
+  
+  const mvTop = (arr) => {
+    const allResults = rotate(arr, moveLeft);
+    return rotateBack(allResults);
+  }
+  
+  const moveDown = (arr) => {
+    const allResults = rotate(arr, mvRight);
+    return rotateBack(allResults);
+  }
+  
 
 function setGame() {//заполняем матрицу ячейками div
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
             const tile = document.createElement('div');
             tile.classList.add("tile");
-            tile.id = r + "-" + c;
+            tile.id = r + "-" + c;//0-1
             tile.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center;');
-            let num = gameBoard[r][c];
-            updateTile(tile, num);
+            let num = gameBoard[r][c];//число
+            updateTile(tile, num);//для цвета
             game.append(tile);
+            
         
         }   
         
     }
+    rerender();//   
+    anyСell();//выводим число 2/4   
     anyСell();//выводим число 2/4
-    anyСell();//выводим число 2/4
-    rerender();
+    
 
 }
 
 setGame();
 
-
 function anyСell(){//любая ячейка, число 2/4
 
-    const randomIndex = Math.floor(Math.random() * rows);
-    const randomIndexTwo = Math.floor(Math.random() * columns); 
-    const number = Math.random() > 0.5  ? 2 : 4;
-    gameBoard[randomIndex][randomIndexTwo] = number;
-    //rerender(randomIndex, number);
-    
+    const randomIndex = Math.floor(Math.random() * rows);//рандомное место в ряде
+    const randomIndexTwo = Math.floor(Math.random() * columns); // рандомное место в колонке
+    const number = Math.random() > 0.5  ? 2 : 4;//рандомное число 
+    gameBoard[randomIndex][randomIndexTwo] = number;//равно рандомному числу
+    //document.getElementById('[randomIndex][randomIndexTwo]');
+    rerender(randomIndex, number);
 }
 
-function rerender(){
+function rerender(randomIndex, number){
     for(let r = 0; r < rows; r++){
         for (let c = 0; c < columns; c++) {
-            const cell = document.getElementById(r + '-' + c);
+            const cell = document.getElementById(r + '-' + c);//ячейка
             if (gameBoard[r][c] === null) {
                 continue;
             }
-            cell.innerText = gameBoard[r][c];
-            //updateTile(cell, number);
+            cell.innerText = gameBoard[r][c];//если ячейка не null то добавь 2/4
+            updateTile(cell, number);
         }
     }
 }   
 
  document.addEventListener('keydown', (event) => {
     if(event.code == 'ArrowLeft'){
-        slideLeft();
+        moveLeft(gameBoard);
     }
     if (event.code == 'ArrowRight') {
-        //slideRight();
+        mvRight(gameBoard)
        }
     // ...
     console.log('>>>', gameBoard);
@@ -80,68 +140,26 @@ function rerender(){
 })
 
 
-// function slideLeft(){
-//     for (let r = 0; r < rows; r++) {
-//         for(let c = 0; c < columns; c++){
-//             const newArr = arr.filter(item => item != null);
-//             console.log(newArr);
-//             for(let i = 0; newArr.length < 4; i++) {
-//             newArr.push(null);
-//             console.log(newArr);
-//             }
-//             return newArr;
-//             }
-//         }
-//     }
-
-// function slideLeft(){
-//     for (let r = 0; r < rows; r++) {
-//         for(let c = 0; c < columns; c++){
-//             let row = gameBoard[r];
-//             row = slide(row);
-//             let tile = document.getElementById(r + '-' + c);
-//             let num = gameBoard[r][c];
-//             updateTile(tile, num);
-
-
-//         }
-//     }
-// }
-
-// gameBoard = [                 r
-//     ['', '', '', ''],    ---- 0
-//     ['', '', '', ''],         1
-//     ['', '', '', ''],         2
-//     ['', '2', '', '']         3
-// ];
+function slideLeft(gameBoard){
+    const result = gameBoard.filter(item => item !== null);
+    for (let i = 0; i < result.length; i++) {
+      if (result[i] === result[i + 1]) {
+        result[i] *= 2;
+        result[i + 1] = null;
+      }
+    }
+  
+    const sum = result.filter(item => item !== null);
+  
+    while (sum.length < 4) {
+      sum.push(null);
+    }
+  
+    return sum;
+    }
 
 // function slideRight(){
-//     for (let r = 0; r < rows; r++) {
-//     let row = gameBoard[r];
-//     //row.push(row.shift());
-//     row = stepSlide(row);
-//     for(let c = 4; c < columns; c++){
-//         let tile = document.getElementById(r + '-' + c);
-//         let num = gameBoard[r][c];
-//         updateTile(tile, num);
-//     }
-//     }
-// }
 
-// function slideLeft(){
-//     for (let r = 0; r < rows; r++) {
-//     let row = gameBoard[r];
-//     row.push(row.shift());
-//     gameBoard[r] = row;
-//     }
-// }
-
-// function slideLeft(){
-//     for (let r = 0; r < rows; r++) {
-//     let row = gameBoard[r];
-//     row.push(row.shift());
-//     gameBoard[r] = row;
-//     }
 // }
 
 function updateTile(tile, num){
