@@ -1,6 +1,13 @@
+const divConteiner = document.createElement('div');
+divConteiner.classList.add('conteiner');
+divConteiner.setAttribute('style', 'height: 2 00px;display: flex;justify-content: center;align-items: center;');
+document.body.append(divConteiner);
+
 const score = document.createElement('div');
 score.classList.add('score');
-score.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35);width: 160px; ')
+score.innerText = ' 0';
+score.setAttribute('style', 'width: 100px;height: 60px;background: #bbada0;border-radius: 5px ;color: white;font-size: 25px;display: flex;justify-content: center;align-items: center;');
+divConteiner.append(score);
 
 
 const game = document.getElementById('game-board');//conteiner
@@ -23,8 +30,8 @@ function setGame() {//заполняем матрицу ячейками div
             const tile = document.createElement('div');
             tile.classList.add("tile");
             tile.id = r + "-" + c;//0-1
-            tile.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center;');
-            let num = gameBoard[r][c];//число
+            tile.setAttribute('style', 'background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center; ');
+            let num = gameBoard[r][c];
             updateTile(tile, num);//для цвета
             game.append(tile);
             
@@ -45,9 +52,8 @@ function anyСell(){//любая ячейка, число 2/4
 
     const randomIndex = Math.floor(Math.random() * rows);//рандомное место в ряде
     const randomIndexTwo = Math.floor(Math.random() * columns); // рандомное место в колонке
-    const number = Math.random() > 0.5  ? 2 : 4;//рандомное число 
+    const number = Math.random() < 0.9  ? 2 : 4;//рандомное число , 2 чащe на 90 процентов чем 4
     gameBoard[randomIndex][randomIndexTwo] = number;//равно рандомному числу
-    //document.getElementById('[randomIndex][randomIndexTwo]');
     rerender(randomIndex, number);
     
 }
@@ -55,22 +61,17 @@ function anyСell(){//любая ячейка, число 2/4
 function rerender(randomIndex, number){
     for(let r = 0; r < rows; r++){
         for (let c = 0; c < columns; c++) {
-          
-            const cell = document.getElementById(r + '-' + c);//ячейка
-            // if (gameBoard[r][c] === null) {
-            //     continue;
-            // }
-
-            cell.innerText = gameBoard[r][c];//если ячейка не null то добавь 2/4
+            const cell = document.getElementById(r + '-' + c);//присваиваем результат id ячейки
+            cell.innerText = gameBoard[r][c];
             updateTile(cell, gameBoard[r][c]);
         }
     }
 }   
 
 const checkIsDirty = (board) => {
-  for (let i = 0; i < 4; i++) {
-  for (let j = 0; j < 4; j++) {
-  if (gameBoard[i][j] !== board[i][j]) {
+  for (let r = 0; r < 4; r++) {
+  for (let c = 0; c < 4; c++) {
+  if (gameBoard[r][c] !== board[r][c]) {
   return true;
   }
   }
@@ -84,7 +85,7 @@ const checkIsDirty = (board) => {
     if(event.code === 'ArrowLeft'){
       const isDirty = checkIsDirty(moveLeft(gameBoard));
       
-      
+    
       gameBoard = moveLeft(gameBoard);
       if (isDirty) {
       anyСell();
@@ -140,20 +141,26 @@ const moveLeft = (arr) => {
   while (sum.length < 4) {
   sum.push(null);
   }
-  console.log(sum ,123456);
+  // console.log(sum ,123456);
   
   asd.push(sum);
   }
   return asd;
   } 
 
-  const mvRight = (arr) => {//направо
-    const copy = arr.map(r => r.reverse())//
-    const res = moveLeft(copy);
-    console.log(res);
+  const mvRight = (arr) => {
+    const reversedRows = arr.map(row => [...row].reverse());
+    const movedRows = moveLeft(reversedRows);
+    return movedRows.map(row => [...row].reverse());
+}
+
+  // const mvRight = (arr) => {//направо
+  //   const copy = arr.map(r => r.reverse())//
+  //   const res = moveLeft(copy);
+  //   console.log(res);
     
-    return res.map(r => r.reverse());
-    }
+  //   return res.map(r => r.reverse());
+  //   }
 
 // const mvRight = (arr) => {//направо
 //   const copy = [...arr].reverse();//
@@ -204,60 +211,60 @@ const moveDown = (arr) => {
 
 
 function updateTile(tile, num){
+  tile.classList.remove("x2", "x4", "x8", "x16", "x32", "x64", "x128", "x256", "x512", "x1024", "x2048");
+  tile.removeAttribute('style');
 
     switch (num) {
         case 2:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x2");
             tile.innerText = num;
             break;
         case 4:
-            tile.setAttribute('style', 'background-color: none;' )
+              
             tile.classList.add("x4");
             tile.innerText = num;
             break;
         case 8:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x8");
             tile.innerText = num;
             break;
         case 16:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x16");
             tile.innerText = num;
             break;
         case 32:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x32");
             tile.innerText = num;
             break;
         case 64:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x64");
             tile.innerText = num;
             break;
         case 128:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x128");
             tile.innerText = num;
             break;
         case 256:
-            tile.setAttribute('style', 'background-color: none;' )
+          
             tile.classList.add("x256");
             tile.innerText = num;
             break;
         case 512:
-            tile.setAttribute('style', 'background-color: none;' )
+            
             tile.classList.add("x512");
             tile.innerText = num;
              break;
         case 1024:
-            tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x1024");
             tile.innerText = num;
             break;
         case 2048:
-            tile.setAttribute('style', 'background-color: none;' )
             tile.classList.add("x2048");
             tile.innerText = num;
             break;
@@ -266,7 +273,5 @@ function updateTile(tile, num){
              tile.innerText = '';
              break;
     }
+   
  }
-
-
-
