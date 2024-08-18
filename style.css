@@ -11,25 +11,13 @@ body {
     color: #776e65;
 }
 
-.score {
-    width: 100px;
-    height: 60px;
-    background: #bbada0;
-    border-radius: 5px ;
-    color: white;
-    font-size: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 * {
     box-sizing: border-box; 
     margin: 0px; 
     padding: 0px;
 }
 
-.x2 {
+/* .x2 {
     background-color: #eee4da;
     color: #776e65;
     display: flex; 
@@ -120,4 +108,4 @@ body {
     justify-content: center; 
     align-items: center;
     font-size: 40px;
-}
+} */
