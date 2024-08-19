@@ -9,11 +9,12 @@ const divConteiner = document.createElement("div");
   const score = document.createElement("div");
   score.classList.add("score");
   score.innerText = "0";
-  score.setAttribute(
-    "style",
-    "width: 100px;height: 60px;background: #bbada0;border-radius: 5px ;color: white;font-size: 25px;display: flex;justify-content: center;align-items: center;"
-  );
   divConteiner.append(score);
+  
+  const scoreTwo = document.createElement("div");
+  scoreTwo.classList.add("scoreTwo");
+  scoreTwo.innerText = "0";
+  divConteiner.append(scoreTwo);
 
   const game = document.getElementById("game-board"); //container
   game.setAttribute(
@@ -21,12 +22,15 @@ const divConteiner = document.createElement("div");
     "position: relative;height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(4, 113px); grid-template-rows: repeat(4, 113px); gap: 15px;"
   );
 
+
+
   let gameBoard; //сама матрица
   let rows = 4; //ряд
   let columns = 4; //колонка
   let total = 0;
+  let totalTwo = 0;
 
-  gameBoard = [
+  gameBoard = [ 
     [null, null, null, null],
     [null, null, null, null],
     [null, null, null, null],
@@ -38,22 +42,21 @@ const divConteiner = document.createElement("div");
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         const tile = document.createElement("div");
-        tile.classList.add("tile");
+        tile.classList.add("tile"); 
         tile.id = r + "-" + c; //0-1
-        tile.setAttribute(
-          "style",
-          "background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center; "
-        );
+        // tile.setAttribute(
+        //   "style",
+        //   "background-color: rgba(238, 228, 218, 0.35); border-radius: 3px; display: flex; justify-content: center; align-items: center; "
+        // );
         let num = gameBoard[r][c];
         updateTile(tile, num); //для цвета
         game.append(tile);
       }
     }
+    anyСell(); //выводим число 2/4
+    anyСell(); //выводим число 2/4
     rerender(); //
-    anyСell(); //выводим число 2/4
-    anyСell(); //выводим число 2/4
   }
-
   setGame();
 
   function anyСell() {
@@ -63,7 +66,7 @@ const divConteiner = document.createElement("div");
     const randomIndexTwo = Math.floor(Math.random() * columns); // рандомное место в колонке
     const number = Math.random() < 0.9 ? 2 : 4; //рандомное число , 2 чащe на 90 процентов чем 4
 
-    if (!gameBoard[randomIndex][randomIndexTwo]) {//если найденая ячейка null 
+    if (gameBoard[randomIndex][randomIndexTwo] === null) {//если найденая ячейка null 
       gameBoard[randomIndex][randomIndexTwo] = number; //равно рандомному числу
     }
     rerender(randomIndex, number);
@@ -79,6 +82,7 @@ const divConteiner = document.createElement("div");
     }
 
     score.innerText = total;
+    scoreTwo.innerText = totalTwo;
   }
 
   const checkIsDirty = (board) => {//когда мы нажимаем на кнопку 
@@ -91,7 +95,7 @@ const divConteiner = document.createElement("div");
         }
       }
     }
-console.log(false);
+  //console.log(false);
 
     return false;//как числа перестают двигаться в ту сторону которую кликаем,false
   };
@@ -102,10 +106,10 @@ console.log(false);
         if(board[r][c] === null){
           return false;
         }
-      if(c < board[r].length && board[r][c] === board[r][c + 1]){
+      if(c < board[r].length-1 && board[r][c] === board[r][c + 1]){
         return false;
       }
-      if(r < board[c].length && board[r][c] === board[r + 1][c] ){
+      if(r < board[c].length-1 && board[r][c] === board[r + 1][c] ){
         return false;
       }
       }
@@ -114,39 +118,40 @@ console.log(false);
   }
 
   document.addEventListener("keydown", (event) => {
-    let isDirty = false;
+    let isDirty;
     if (event.code === "ArrowLeft") {
       isDirty = checkIsDirty(moveLeft(gameBoard));//следит за событиями было ли изменение
 
       gameBoard = [ ...moveLeft(gameBoard)];//если изменение произошло обновляется значение gameBoard результатом движения
-
+    if (isDirty) {
+      anyСell();
+    }    
     }
     if (event.code === "ArrowRight") {
       isDirty = checkIsDirty(mvRight(gameBoard));
 
-      gameBoard = [...mvRight(gameBoard)];
-
+      gameBoard = [...mvRight(gameBoard)]
+    if (isDirty) {
+      anyСell();
+    }
     }
 
     if (event.code === "ArrowUp") {
       isDirty = checkIsDirty(mvTop(gameBoard));
 
       gameBoard = [...mvTop(gameBoard)];
-      
-
+    if (isDirty) {
+      anyСell();
+    }
     }
     if (event.code === "ArrowDown") {
       isDirty = checkIsDirty(moveDown(gameBoard));
 
-      gameBoard = [...moveDown(gameBoard)];
-
-    }
-
+      gameBoard = [...moveDown(gameBoard)]
     if (isDirty) {
       anyСell();
-    }else if(!isDirty){
-      anyСell();
     }
+  }
 
     if(completion(gameBoard)){
       alert('игра окончена!');
@@ -161,6 +166,7 @@ console.log(false);
       for (let i = 0; i < result.length; i++) {
         if (result[i] && result[i] === result[i + 1]) {
           total +=result[i];
+          totalTwo += result[i];
           result[i] *= 2;
           result[i + 1] = null;
         }
@@ -291,4 +297,4 @@ console.log(false);
         tile.innerText = "";
         break;
     }
-  }
+  };

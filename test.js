@@ -64,3 +64,12 @@
 //   return rotateBack(allResults);
 // }
 
+  score.setAttribute(
+    "style",
+    "width: 100px;height: 60px;background: #bbada0;border-radius: 5px ;color: white;font-size: 25px;display: flex;justify-content: center;align-items: center;margin:0px 10px;"
+  );
+
+    scoreTwo.setAttribute(
+    "style",
+    "width: 100px;height: 60px;background: #bbada0;border-radius: 5px ;color: white;font-size: 25px;display: flex;justify-content: center;align-items: center;margin:0px 10px"
+  );

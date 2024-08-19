@@ -17,6 +17,64 @@ body {
     padding: 0px;
 }
 
+.score ,
+.scoreTwo{
+    position: relative;
+    display: block;
+    background: #bbada0;
+    padding: 15px 25px;
+    font-size: 25px;
+    height: 25px;
+    line-height: 47px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    margin-top: 8px;
+    text-align: center;
+    height: 60px;
+    width: 100px;
+    margin: 10px;
+}
+
+.score::after{
+    content: 'Score';
+}
+
+.scoreTwo::after{
+    content: 'Best';
+}
+
+
+.score::after ,
+.scoreTwo::after{
+    position: absolute;
+    width: 100%;
+    top: 10px;
+    left: 0;
+    text-transform: uppercase;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: center;
+    color: #eee4da;
+}
+
+.tile{
+    background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    animation: show 200ms;
+    transition: 100ms;
+}
+
+@keyframes show {
+    0% {
+      opacity: 0    ;
+      transform: scale(0);
+    }
+  }
+
 /* .x2 {
     background-color: #eee4da;
     color: #776e65;
