@@ -16,6 +16,12 @@ const divConteiner = document.createElement("div");
   scoreTwo.innerText = "0";
   divConteiner.append(scoreTwo);
 
+  const calc = document.createElement("div");
+  calc.classList.add("calc");
+  calc.innerText = "0";
+  divConteiner.append(calc);
+
+
   const game = document.getElementById("game-board"); //container
   game.setAttribute(
     "style",
@@ -29,6 +35,7 @@ const divConteiner = document.createElement("div");
   let columns = 4; //колонка
   let total = 0;
   let totalTwo = 0;
+  const prevGameBoard = (JSON.parse(localStorage.getItem('gameBoard'))).value;
 
   gameBoard = [ 
     [null, null, null, null],
@@ -37,7 +44,25 @@ const divConteiner = document.createElement("div");
     [null, null, null, null],
   ];
 
+  const checkIsDirty = (board) => {//когда мы нажимаем на кнопку 
+    for (let r = 0; r < 4; r++) {//проходится по массиву
+      for (let c = 0; c < 4; c++) {
+        if (gameBoard[r][c] !== board[r][c]) {//сравнивает с оригинальной версией и после движения и если обнаружилось различие выводит true если ничего не поменялось false
+          console.log(true);
+          
+          return true;//пока числа перекатываются в ту сторону которую нажимаем,true
+        }
+      }
+    }
+  //console.log(false);
+
+    return false;//как числа перестают двигаться в ту сторону которую кликаем,false
+  };
+
   function setGame() {
+    if(checkIsDirty(prevGameBoard)){
+      gameBoard = prevGameBoard;
+    }
     //заполняем матрицу ячейками div
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
@@ -69,10 +94,10 @@ const divConteiner = document.createElement("div");
     if (gameBoard[randomIndex][randomIndexTwo] === null) {//если найденая ячейка null 
       gameBoard[randomIndex][randomIndexTwo] = number; //равно рандомному числу
     }
-    rerender(randomIndex, number);
+    rerender();
   }
 
-  function rerender(randomIndex, number) {
+  function rerender() {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         const cell = document.getElementById(r + "-" + c); //присваиваем результат id ячейки
@@ -80,25 +105,11 @@ const divConteiner = document.createElement("div");
         updateTile(cell, gameBoard[r][c]);
       }
     }
-
+    localStorage.setItem('gameBoard',JSON.stringify({value:(gameBoard)}));
+    localStorage.getItem('gameBoard',JSON.parse({value:(gameBoard)}));
     score.innerText = total;
     scoreTwo.innerText = totalTwo;
   }
-
-  const checkIsDirty = (board) => {//когда мы нажимаем на кнопку 
-    for (let r = 0; r < 4; r++) {//проходится по массиву
-      for (let c = 0; c < 4; c++) {
-        if (gameBoard[r][c] !== board[r][c]) {//сравнивает с оригинальной версией и после движения и если обнаружилось различие выводит true если ничего не поменялось false
-          console.log(true);
-          
-          return true;//пока числа перекатываются в ту сторону которую нажимаем,true
-        }
-      }
-    }
-  //console.log(false);
-
-    return false;//как числа перестают двигаться в ту сторону которую кликаем,false
-  };
 
   function completion(board){
     for(let r = 0; r < rows; r++){
@@ -298,3 +309,4 @@ const divConteiner = document.createElement("div");
         break;
     }
   };
+
