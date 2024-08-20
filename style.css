@@ -9,12 +9,32 @@ body {
     font-size: 55px;
     font-weight: 700;
     color: #776e65;
+    max-width: 525px;
+    margin: 0px auto;
 }
 
 * {
     box-sizing: border-box; 
     margin: 0px; 
     padding: 0px;
+}
+
+.conteiner {
+display: flex;
+
+}
+
+.calc{
+    height: 60px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    background: #bbada0;
+    border: none;
+    margin: 10px;
+    text-transform: uppercase;
 }
 
 .score ,
@@ -74,6 +94,25 @@ body {
       transform: scale(0);
     }
   }
+
+.text {
+    height: 90px;
+    font-size: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+/* .game-board{
+    position: relative;
+    height: 525px; width: 525px;
+    background-color: #bbada0;
+    border: 15px solid #bbada0;
+    border-radius: 5px;
+    display: grid; 
+    grid-template-columns: repeat(4, 113px);
+    grid-template-rows: repeat(4, 113px); 
+    gap: 15px;
+} */
 
 /* .x2 {
     background-color: #eee4da;
