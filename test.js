@@ -123,15 +123,15 @@
     );
     document.body.append(divConteiner);
   
-    const score = document.createElement("div");
-    score.classList.add("score");
-    score.innerText = "0";
-    divConteiner.append(score);
+    const currentScoreElem = document.createElement("div");
+    currentScoreElem.classList.add("score");
+    currentScoreElem.innerText = "0";
+    divConteiner.append(currentScoreElem);
     
-    const scoreTwo = document.createElement("div");
-    scoreTwo.classList.add("scoreTwo");
-    scoreTwo.innerText = "0";
-    divConteiner.append(scoreTwo);
+    const bestScoreElem = document.createElement("div");
+    bestScoreElem.classList.add("scoreTwo");
+    bestScoreElem.innerText = "0";
+    divConteiner.append(bestScoreElem);
   
     const calc = document.createElement("div");
     calc.classList.add("calc");
@@ -183,8 +183,8 @@
       }
       localStorage.setItem('gameBoard',JSON.stringify({value:(gameBoard)}));
       localStorage.getItem('gameBoard',JSON.parse({value:(gameBoard)}));
-      score.innerText = total;
-      scoreTwo.innerText = totalTwo;
+      currentScoreElem.innerText = currentScore;
+      bestScoreElem.innerText = bestScore;
     }
   
     function completion(board){
@@ -252,8 +252,8 @@
         const result = arr[c].filter((item) => item !== null);
         for (let i = 0; i < result.length; i++) {
           if (result[i] && result[i] === result[i + 1]) {
-            total +=result[i];
-            totalTwo += result[i];
+            currentScore +=result[i];
+            bestScore += result[i];
             result[i] *= 2;
             result[i + 1] = null;
           }
@@ -386,4 +386,63 @@
       }
     };
   
-  
+    const size = +prompt('на какой площадке вы хотите играть?','');
+    // function sizeGame(){
+    // switch(size){
+    //   case 3:
+    //     game.setAttribute(
+    //       "style",
+    //       "position: relative; height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(3, 300px); grid-template-rows: repeat(3, 300px); gap: 15px;"
+    //     );
+    //     case 4:
+    //       tile.setAttribute(
+    //         "style",
+    //         "background-color: #f69664;color: white;display: flex; justify-content: center; align-items: center;height: 640px; width: 640px; "
+    //       );
+    //       tile.innerText = num;
+    //       case 5:
+    //         tile.setAttribute(
+    //           "style",
+    //           "background-color: #f69664;color: white;display: flex; justify-content: center; align-items: center;height: 640px; width: 640px; "
+    //         );
+    //         tile.innerText = num;
+    // }
+    // }
+    if(size === 3){
+      gameBoard = gameBoardThree;
+      rows = 3;
+      columns = 3;
+      game.setAttribute(
+        "style",
+        " grid-template-columns: repeat(3, 113px); grid-template-rows: repeat(3, 113px);"
+      );
+    
+    }
+    let gameBoardThree = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+    ];
+    
+    let gameBoardFive = [
+      [null, null, null, null, null],
+      [null, null, null, null, null],
+      [null, null, null, null, null],
+      [null, null, null, null, null],
+      [null, null, null, null, null],
+    ];
+    
+    // let gameBoard; //сама матрица
+    // console.log(gameBoard);
+    // let rows = 4; //ряд
+    // let columns = 4; //колонка
+    // let total = 0;
+    // let totalTwo = 0;
+    // const prevGameBoard = localStorage.getItem("gameBoard"); // достаем gameboard из localStorage 1
+    
+    gameBoard = [
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ];

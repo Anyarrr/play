@@ -102,9 +102,10 @@ display: flex;
     justify-content: center;
 }
 
-/* .game-board{
+ .game-board{
     position: relative;
-    height: 525px; width: 525px;
+    height: 525px; 
+    width: 525px;
     background-color: #bbada0;
     border: 15px solid #bbada0;
     border-radius: 5px;
@@ -112,97 +113,17 @@ display: flex;
     grid-template-columns: repeat(4, 113px);
     grid-template-rows: repeat(4, 113px); 
     gap: 15px;
-} */
+} 
 
-/* .x2 {
-    background-color: #eee4da;
-    color: #776e65;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x4 {
-    background-color: #eee1c9;
-    color: #776e65;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x8 {
-    background-color: #f3b27a;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x16{
-    background-color: #f69664;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x32{
-    background-color: #f77c5f;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x64{
-    background-color: #f75f3b;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.x128{
-    background-color: #edce71;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    font-size: 45px;
-}
-
-.x256{
-    background-color: #edcc62;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    font-size: 45px;
-}
-
-.x512{
-    background-color: #edc651;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    font-size: 45px;
-}
-
-.x1024{
-    background-color: #eec744;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    font-size: 40px;
-}
-
-.x2048{
-    background-color: #ecc230;
-    color: white;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    font-size: 40px;
+/* .game-board{
+position: relative;
+height: 525px;
+width: 525px; 
+background-color: #bbada0;
+border: 15px solid #bbada0; 
+border-radius: 5px; 
+display: grid; 
+grid-template-columns: repeat(4, 113px); 
+grid-template-rows: repeat(4, 113px); 
+gap: 15px;
 } */
