@@ -102,20 +102,27 @@ display: flex;
     justify-content: center;
 }
 
- .game-board{
+:root {
+    --size: 4; /* Начальное значение для числа колонок и строк */
+}
+
+/* #game-board {
     position: relative;
-    height: 525px; 
-    width: 525px;
+    height: 80vh;
+    width: 80vw; 
+    max-width: 525px; 
+    max-height: 525px;
     background-color: #bbada0;
     border: 15px solid #bbada0;
     border-radius: 5px;
     display: grid; 
-    grid-template-columns: repeat(4, 113px);
-    grid-template-rows: repeat(4, 113px); 
+    grid-template-columns: repeat(var(--size), 113px); 
+    grid-template-rows: repeat(var(--size), 113px); 
     gap: 15px;
-} 
+    margin: 0 auto;
+} */
 
-/* .game-board{
+#game-board{
 position: relative;
 height: 525px;
 width: 525px; 
@@ -126,4 +133,4 @@ display: grid;
 grid-template-columns: repeat(4, 113px); 
 grid-template-rows: repeat(4, 113px); 
 gap: 15px;
-} */
+}

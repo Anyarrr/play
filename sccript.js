@@ -29,32 +29,22 @@ text.innerText = "2048";
 divConteiner.append(text);
 
 const game = document.getElementById("game-board"); //container
-  game.setAttribute(
-    "style",
-    "position: relative; height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(10, 113px); grid-template-rows: repeat(10, 113px); gap: 15px;"
-  );
 
-let size = +prompt('на какой площадке вы хотите играть?','');
-// console.log(size);
-// let user = 3;
-
-const createMatrix = (size) => {
-  return new Array(size).fill(undefined).map(() => {
-    return new Array(size).fill(null);
-  });
-};
-console.log(createMatrix(size));
+let gameBoard;
 
 
-let gameBoard = createMatrix(size); //сама матрица
-
-
-let rows = size; //ряд
-let columns = size; //колонка
+let rows = 4; //ряд
+let columns = 4; //колонка
 let currentScore = 0;
 let bestScore = 0;
 const prevGameBoard = localStorage.getItem("gameBoard"); // достаем gameboard из localStorage 1
 
+gameBoard = [
+  [null,null,null,null],
+  [null,null,null,null],
+  [null,null,null,null],
+  [null,null,null,null],
+] //сам
 
 const checkIsDirty = (board) => {
   //когда мы нажимаем на кнопку
@@ -148,6 +138,12 @@ function rerender() {
       updateTile(cell, gameBoard[r][c]);
     }
   }
+  gameBoard = [
+    [null,null,null,null],
+    [null,null,null,null],
+    [null,null,null,null],
+    [null,null,null,null],
+  ] //сам
 
   // 4
   // добавляем значения в localStorage при обновлении
