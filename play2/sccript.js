@@ -1,75 +1,102 @@
-const localStorageItems = {
-  SCORE: 'score',
-  BEST: 'best',
-  GAME_BOARD: 'gameBoard',
-}
+let size = 4;
+let numberField = 0;
+let gameBoard = createMatrix(size);
+let rows = 4;
+let columns = 4;
+let currentScore = 0;
+let bestScore = 0;
 
 const divConteiner = document.createElement("div");
 divConteiner.classList.add("conteiner");
 document.body.append(divConteiner);
 
-const currentScoreElem = document.createElement("div");
-currentScoreElem.classList.add("score");
-currentScoreElem.innerText = "0";
-divConteiner.append(currentScoreElem);
+// const currentScoreElem = document.createElement("div");
+// currentScoreElem.classList.add("score");
+// currentScoreElem.innerText = "0";
+// divConteiner.append(currentScoreElem);
 
-const bestScoreElem = document.createElement("div");
-bestScoreElem.classList.add("scoreTwo");
-bestScoreElem.innerText = "0";
-divConteiner.append(bestScoreElem);
+// const bestScoreElem = document.createElement("div");
+// bestScoreElem.classList.add("scoreTwo");
+// bestScoreElem.innerText = "0";
+// divConteiner.append(bestScoreElem);
 
 const clear = document.createElement("button");
 clear.classList.add("calc");
 clear.innerText = "new game";
-divConteiner.append(clear); 
+divConteiner.append(clear);
 
-const text = document.createElement("h2");
-text.classList.add("text");
-text.innerText = "2048";
-divConteiner.append(text);
+const field = document.createElement("button");
+field.classList.add("field");
+field.innerText = "field";
+divConteiner.append(field);
 
 const game = document.getElementById("game-board"); //container
+game.setAttribute(
+  "style",
+  `position: relative; height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(${size}, 113px); grid-template-rows: repeat(${size}, 113px); gap: 15px;`
+  // "position: relative; height: 525px; width: 525px; background-color: #bbada0; border: 15px solid #bbada0; border-radius: 5px; display: grid; grid-template-columns: repeat(3, 113px); grid-template-rows: repeat(3, 113px); gap: 15px;"
+);
 
-let gameBoard;
 
 
-let rows = 4; //ряд
-let columns = 4; //колонка
-let currentScore = 0;
-let bestScore = 0;
-const prevGameBoard = localStorage.getItem("gameBoard"); // достаем gameboard из localStorage 1
 
-gameBoard = [
-  [null,null,null,null],
-  [null,null,null,null],
-  [null,null,null,null],
-  [null,null,null,null],
-] //сам
+const prevGameBoard = localStorage.getItem("gameBoard");
 
-const checkIsDirty = (board) => {
+initGame();
+
+const newField = () => {  //1
+  size = +prompt('На какой площадке вы хотите играть?', '');
+  // проверить число ли
+
+  // удалить старые элементы из DOM
+  numberField = size;
+  rows = numberField; //ряд
+  columns = numberField; //колонка  
+  gameBoard = createMatrix(numberField);
+  console.log(gameBoard);
+  game.style.gridTemplateColumns = `repeat(${columns}, 113px)`;
+  game.style.gridTemplateRows = `repeat(${rows}, 113px)`; 
+  setGame();
+}
+
+function createMatrix(numberField) {//2
+  return new Array(numberField).fill(undefined).map(() => {
+    return new Array(numberField).fill(null);
+  });
+}
+function checkIsDirty(board) {//5
   //когда мы нажимаем на кнопку
-  for (let r = 0; r < rows; r++) {
+  for (let r = 0; r < board.length; r++) {
     //проходится по массиву
-    for (let c = 0; c < columns; c++) {
-      if (gameBoard[r][c] !== board[r][c]) {
-        //сравнивает с оригинальной версией и после движения и если обнаружилось различие выводит true если ничего не поменялось false
-
+    for (let c = 0; c < board.length; c++) {
+      if (gameBoard[r][c] !== board[r][c]) {//сравнивает с оригинальной версией и после движения и если обнаружилось различие выводит true если ничего не поменялось false
         return true; //пока числа перекатываются в ту сторону которую нажимаем,true
       }
     }
   }
-
   return false; //как числа перестают двигаться в ту сторону которую кликаем,false
 };
 
-const setGame = () => {
+function checkChanges(newState) {
+  const oldState = localStorage.getItem("gameBoard");
+  if (!oldState) {
+    //
+  }
+  if (newState !== oldState) {
+    //
+  }
+
+  //
+}
+
+function setGame() {
   // 2
-  if (prevGameBoard && checkIsDirty(JSON.parse(prevGameBoard).value)) { // проверяем есть ли сохраненная игра и значениея отличаются от начальных
-    gameBoard = JSON.parse(prevGameBoard).value; // если есть приравниваем значения
+  if (prevGameBoard && checkIsDirty(JSON.parse(prevGameBoard).value)) { // проверяем есть ли сохраненная игра и значениея отличаются от начальных//4
+    gameBoard = JSON.parse(prevGameBoard).value; // если есть приравниваем значения//6
     currentScore = Number(localStorage.getItem('score'));
     bestScore = Number(localStorage.getItem('best'));
-    
   }
+
   //заполняем матрицу ячейками div
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < columns; c++) {
@@ -82,25 +109,16 @@ const setGame = () => {
       game.append(tile);
     }
   }
-if(!prevGameBoard){
-  rerender();
-  anyСell(); //выводим число 2/4
-  anyСell(); //выводим число 2/4
-}
+
+  if (!prevGameBoard) {
+    rerender(gameBoard);
+    generateNewCell(); //выводим число 2/4
+    generateNewCell(); //выводим число 2/4
+  }
 }
 
-setGame();
-renderBestScore();
-
-clear.addEventListener('click', () => {  // добоаляем событие для кнопки очистки
-  gameBoard = [
-    [null,null,null,null],
-    [null,null,null,null],
-    [null,null,null,null],
-    [null,null,null,null],
-  ]
-  
-  // 3
+clear.addEventListener('click', () => {  // добоаляем событие для кнопки очистки  
+  newField();//1
   // очищаем localStorage
   localStorage.removeItem('gameBoard');
   localStorage.removeItem('score');
@@ -108,16 +126,14 @@ clear.addEventListener('click', () => {  // добоаляем событие д
   // очищаем счет
   currentScore = 0;
   currentScoreElem.innerText = 0;
-  anyСell(); //выводим число 2/4
-  anyСell(); //выводим число 2/4
 })
 
-function anyСell() {
+function generateNewCell() {
   // любая ячейка, число 2/4
 
   let randomIndex = Math.floor(Math.random() * rows); //рандомное место в ряде
   let randomIndexTwo = Math.floor(Math.random() * columns); // рандомное место в колонке
-  
+
   // Найти пустую ячейку
   do {
     randomIndex = Math.floor(Math.random() * rows); // случайный индекс строки
@@ -129,25 +145,25 @@ function anyСell() {
 
   // Заполняем найденную пустую ячейку
   gameBoard[randomIndex][randomIndexTwo] = number; // равняем ячейке сгенерированное число
-  
+  console.log('>>>', number);
+  console.log('gb >>', gameBoard)
+
   // Перерисовка (rerender)
-  rerender();
+  rerender(gameBoard);
 }
 
-
-function rerender() {
+function rerender(gameValues) {
+  console.log('>>>>>', { rows, columns})
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < columns; c++) {
-      const cell = document.getElementById(r + "-" + c); //присваиваем результат id ячейки
-      cell.innerText = gameBoard[r][c]; //обновление текста ячейки
-      updateTile(cell, gameBoard[r][c]);
+      const cell = document.getElementById(r + "-" + c);
+      console.log('cell >>>', cell);
+      cell.innerText = gameValues[r][c]; //обновление текста ячейки
+      updateTile(cell, gameValues[r][c]);
     }
   }
-
-
-  // 4
   // добавляем значения в localStorage при обновлении
-  localStorage.setItem("gameBoard", JSON.stringify({ value: [ ...gameBoard ] }));//сохраняем gameBoatd как строку 
+  localStorage.setItem("gameBoard", JSON.stringify({ value: [...gameValues] }));//сохраняем gameBoatd как строку 
   localStorage.setItem("score", currentScore);//соxраняем total как строку  
   bestScoreElem.innerText = bestScore;//присваиваем рекорду ее let
   currentScoreElem.innerText = currentScore;//присваиваем счету игры ее let 
@@ -156,15 +172,21 @@ function rerender() {
     setNewBestScore(currentScore);
   }
 
-  if (completion(gameBoard)) {
-    setTimeout( "alert('игра окончена!')",1000);
-  }
+  if (completion(gameValues)) {
+    setTimeout("alert('игра окончена!')", 1000);
+  }   
 }
 
 function setNewBestScore(score) {
   bestScore = score;
-  bestScoreElem.innerText =  score;
+  bestScoreElem.innerText = score;
   localStorage.setItem("best", score);//тогда мы сохраняем в рекорд счетчик
+}
+
+function initGame() {
+  renderBestScore();
+  renderGameField();
+  setGame();
 }
 
 function renderBestScore() {
@@ -174,6 +196,18 @@ function renderBestScore() {
   }
   bestScoreElem.innerText = score;
   bestScore = score
+}
+
+function renderGameField() {
+  const renderGameBoard = localStorage.getItem("gameBoard");
+  if (!renderGameBoard) {
+    return;
+  }
+  gameBoard = JSON.parse(renderGameBoard).value;
+  size = gameBoard.length;
+  rows = gameBoard.length;
+  columns = gameBoard.length;
+  console.log('???', gameBoard);
 }
 
 function completion(board) {
@@ -200,7 +234,7 @@ document.addEventListener("keydown", (event) => {
 
     gameBoard = [...moveLeft(gameBoard)]; //если изменение произошло обновляется значение gameBoard результатом движения
     if (isDirty) {
-      anyСell();
+      generateNewCell();
     }
   }
   if (event.code === "ArrowRight") {
@@ -209,7 +243,7 @@ document.addEventListener("keydown", (event) => {
     gameBoard = [...mvRight(gameBoard)];
     if (isDirty) {
 
-      anyСell();
+      generateNewCell();
     }
   }
 
@@ -219,7 +253,7 @@ document.addEventListener("keydown", (event) => {
     gameBoard = [...mvTop(gameBoard)];
     if (isDirty) {
 
-      anyСell();
+      generateNewCell();
     }
   }
   if (event.code === "ArrowDown") {
@@ -228,7 +262,7 @@ document.addEventListener("keydown", (event) => {
     gameBoard = [...moveDown(gameBoard)];
     if (isDirty) {
 
-      anyСell();
+      generateNewCell();
     }
   }
 
@@ -243,9 +277,11 @@ const moveLeft = (arr) => {
     for (let i = 0; i < result.length; i++) {
       if (result[i] && result[i] === result[i + 1]) {
         currentScore += result[i];
-
         result[i] *= 2;
         result[i + 1] = null;
+      }
+      if(result === 2048){
+        alert('победа');
       }
     }
     const sum = result.filter((item) => item !== null);
@@ -410,3 +446,13 @@ function updateTile(tile, num) {
   }
 }
 
+/**
+ * 
+1) проверить, сохранено ли что-то в хранилище
+2) если да, то "отрисуем" сохраненные результаты
+3) если нет, то создать дефолтное игровое поле 4 на 4
+
+getStorageData() - проверить, сохранено ли что-то в хранилище (получить данные из стораджа)
+renderGameField() - отрисовать игровое поле
+createDefaultGameField() - создать дефолтное игровое поле
+ */
